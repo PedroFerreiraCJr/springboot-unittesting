@@ -4,63 +4,48 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.in28minutes.unittesting.data.SomeDataService;
 
 class SomeBusinessMockTest {
 
+	SomeBusinessImpl business = new SomeBusinessImpl();
+	SomeDataService dataServiceMock = mock(SomeDataService.class);
+
+	@BeforeEach
+	public void before() {
+		business.setSomeDataService(dataServiceMock);
+	}
+
 	@Test
 	public void calculateSumUsingDataService_basic() {
 		// cenário
-		SomeBusinessImpl business = new SomeBusinessImpl();
-
-		// cria e configura o objeto mock
-		SomeDataService dataServiceMock = mock(SomeDataService.class);
 		when(dataServiceMock.retrieveAllData()).thenReturn(new int[] { 1, 2, 3 });
-		business.setSomeDataService(dataServiceMock);
 
 		// ação
-		int actualResult = business.calculateSumUsingDataService();
-		int expectedResult = 6;
-
 		// verificação
-		assertEquals(expectedResult, actualResult);
+		assertEquals(6, business.calculateSumUsingDataService());
 	}
 
 	@Test
 	public void calculateSumUsingDataService_emptyArray() {
 		// cenário
-		SomeBusinessImpl business = new SomeBusinessImpl();
-
-		// cria e configura o objeto mock
-		SomeDataService dataServiceMock = mock(SomeDataService.class);
 		when(dataServiceMock.retrieveAllData()).thenReturn(new int[] {});
-		business.setSomeDataService(dataServiceMock);
 
 		// ação
-		int actualResult = business.calculateSumUsingDataService();
-		int expectedResult = 0;
-
 		// verificação
-		assertEquals(expectedResult, actualResult);
+		assertEquals(0, business.calculateSumUsingDataService());
 	}
 
 	@Test
 	public void calculateSumUsingDataService_oneValue() {
 		// cenário
-		SomeBusinessImpl business = new SomeBusinessImpl();
-
-		// cria e configura o objeto mock
-		SomeDataService dataServiceMock = mock(SomeDataService.class);
 		when(dataServiceMock.retrieveAllData()).thenReturn(new int[] { 10 });
-		business.setSomeDataService(dataServiceMock);
 
 		// ação
-		int actualResult = business.calculateSumUsingDataService();
-		int expectedResult = 10;
-
 		// verificação
-		assertEquals(expectedResult, actualResult);
+		assertEquals(10, business.calculateSumUsingDataService());
 	}
 }
