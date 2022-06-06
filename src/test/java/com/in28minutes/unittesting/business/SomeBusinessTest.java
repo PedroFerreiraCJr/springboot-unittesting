@@ -25,7 +25,7 @@ class SomeBusinessTest {
 	}
 
 	@Test
-	public void calculateSum_onValue() {
+	public void calculateSum_oneValue() {
 		SomeBusinessImpl business = new SomeBusinessImpl();
 		int actualResult = business.calculateSum(new int[] { 10 });
 		int expectedResult = 10;
