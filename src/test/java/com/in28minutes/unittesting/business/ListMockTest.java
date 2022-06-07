@@ -7,10 +7,12 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -89,6 +91,49 @@ class ListMockTest {
 
 		assertEquals("SomeString1", allValues.get(0));
 		assertEquals("SomeString2", allValues.get(1));
+	}
 
+	@Test
+	public void mocking() {
+		/**
+		 * Um tipo mockado não mantém comportamento, sempre retornando valores default
+		 * quando não especificado algo diferente com o uso do método when.
+		 */
+		ArrayList arrayListMock = mock(ArrayList.class);
+		System.out.println(arrayListMock.get(0));
+		System.out.println(arrayListMock.size());
+		arrayListMock.add("Test");
+		arrayListMock.add("Test2");
+		System.out.println(arrayListMock.size());
+		when(arrayListMock.size()).thenReturn(5);
+		System.out.println(arrayListMock.size());
+	}
+
+	@Test
+	public void spying() {
+		/**
+		 * Um tipo criando usando Spy, por outro lado, mantém comportamento, mas podem
+		 * ser especificados também a partir do stubbing.
+		 * 
+		 * Quando especificando um comportamento no objeto spy, o comportamento original
+		 * é sobrescrito.
+		 * 
+		 * Um spy também pode ser verificado com o método verify do Mockito.
+		 */
+		ArrayList arrayListSpy = spy(ArrayList.class);
+		arrayListSpy.add("Test0");
+		System.out.println(arrayListSpy.get(0));
+		System.out.println(arrayListSpy.size());
+		arrayListSpy.add("Test");
+		arrayListSpy.add("Test2");
+		System.out.println(arrayListSpy.size());
+
+		when(arrayListSpy.size()).thenReturn(5);
+		System.out.println(arrayListSpy.size());
+
+		arrayListSpy.add("Test4");
+		System.out.println(arrayListSpy.size());
+
+		verify(arrayListSpy).add("Test4");
 	}
 }
