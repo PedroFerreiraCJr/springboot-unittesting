@@ -1,6 +1,8 @@
 package com.in28minutes.unittesting.controller;
 
-import org.junit.jupiter.api.Assertions;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,9 +38,17 @@ public class HelloWorldControllerTest {
 		// @formatter:on
 
 		// executa a requisição criada anteriormente e pega a resposta
-		MvcResult result = mockMvc.perform(request).andReturn();
+		// @formatter:off
+		MvcResult result = mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().string("Hello World"))
+			.andReturn();
+		// @formatter:on
 
 		// verifica o resultado da resposta
-		Assertions.assertEquals("Hello World", result.getResponse().getContentAsString());
+		// quando a resposta é simples, basta usar o andExpect
+		// mas em aulas posteriores, com respostas mais complexas, será necessário usar
+		// asserções
+//		Assertions.assertEquals("Hello World", result.getResponse().getContentAsString());
 	}
 }
