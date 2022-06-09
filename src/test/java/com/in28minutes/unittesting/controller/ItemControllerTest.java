@@ -46,7 +46,7 @@ public class ItemControllerTest {
 			.andExpect(status().isOk())
 			// o método json, mesmo quando ausente um atributo do JSON, o teste passa com barra verde
 			// pode ser que isso não seja o esperado, na maioria dos casos
-			.andExpect(content().json("{\"id\":1,\"name\":\"\",\"price\":10,\"quantity\":100}"))
+			.andExpect(content().json("{\"id\":1,\"name\":\"Ball\",\"price\":10,\"quantity\":100}"))
 			.andReturn();
 		// @formatter:on
 
