@@ -4,13 +4,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.in28minutes.unittesting.business.ItemBusinessService;
+import com.in28minutes.unittesting.model.Item;
 
 /**
  * Esta classe testa a camanda Controller da arquitetura em três camadas:
@@ -22,8 +27,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @WebMvcTest(ItemController.class)
 public class ItemControllerTest {
 
+	/**
+	 * <pre>
+	 * &#64;WebMvcTest é a anotação que torna possível o uso da classe MockMvc no
+	 * contexto do teste.
+	 * </pre>
+	 */
 	@Autowired
 	private MockMvc mockMvc;
+
+	/**
+	 * <pre>
+	 * &#64;MockBean é uma anotação do Spring Boot usada para criar bean mocados.
+	 * </pre>
+	 */
+	@MockBean
+	private ItemBusinessService businessService;
 
 	/**
 	 * O objetivo deste teste é fazer uma chamada para a URI /dummy-item que está
@@ -52,5 +71,38 @@ public class ItemControllerTest {
 
 		// verifica o resultado da resposta
 //		Assertions.assertEquals("Hello World", result.getResponse().getContentAsString());
+	}
+
+	/**
+	 * <pre>
+	 * O objetivo deste teste é fazer uma chamada para a URI
+	 * <strong>/item-from-business-service</strong> que está presente no controlador
+	 * ItemController.
+	 * 
+	 * Mas a questão que deve ser notada é que, agora, temos uma dependência, e portanto,
+	 * como este é um teste unitário da camada de controlador, será preciso mocar a camada
+	 * de serviço que é utilizada na invocação do método itemFromBusinessService()
+	 * da classe ItemController.
+	 * </pre>
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void itemBusinessService_basic() throws Exception {
+		// @formatter:off
+		Mockito.when(businessService.retrieveHardcodedItem())
+			.thenReturn(new Item(2, "Item 2", 10, 10));
+
+		RequestBuilder request = MockMvcRequestBuilders
+			.get("/item-from-business-service")
+			.accept(MediaType.APPLICATION_JSON);
+		// @formatter:on
+
+		// @formatter:off
+		MvcResult result = mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().json("{id:2, name:\"Item 2\", price:10}"))
+			.andReturn();
+		// @formatter:on
 	}
 }
