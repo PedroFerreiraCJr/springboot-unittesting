@@ -12,17 +12,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.in28minutes.unittesting.data.SomeDataService;
 
 /**
- * Como estou usando a versão do JUnit 5, nesta aula é preciso utilizar a
- * anotação abaixo ao invés da @RunWith(MockitoJUnitRunner.class), que deve ser
- * usada quando utilizando outro runner no JUnit 4.
+ * Como estou usando a versão do JUnit 5, é preciso utilizar a anotação abaixo
+ * ao invés da @RunWith(MockitoJUnitRunner.class), que deve ser usada quando
+ * utilizando outro runner no JUnit 4.
  */
 @ExtendWith(MockitoExtension.class)
 class SomeBusinessMockTest {
 
-	@InjectMocks	// Esta anotação cria a instância deste objeto, e injeta os mocks declarados neste teste
+	@InjectMocks // Esta anotação cria a instância deste objeto, e injeta os mocks declarados
+					// neste teste
 	SomeBusinessImpl business;
 
-	@Mock			// Esta anotação declara que esse atributo é um mock a ser injetado no objeto de teste
+	@Mock // Esta anotação declara que esse atributo é um mock a ser injetado no objeto de
+			// teste
 	SomeDataService dataServiceMock;
 
 	@Test
